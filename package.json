@@ -1,0 +1,14 @@
+{
+  "name": "bouncing-ballz",
+  "version": "1.0.0",
+  "description": "Micro physics simulator in browser",
+  "main": "./dist/index.js",
+  "scripts": {
+    "transpile": "tsc",
+    "watch": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "Arman Ghazaryan",
+  "license": "ISC",
+  "type": "module"
+}
