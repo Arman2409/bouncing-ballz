@@ -1,5 +1,5 @@
 import updateAndDrawBalls from "./functions/updateAndDrawBalls.js";
-import { Ball } from "./objects/Ball.js";
+import { Ball } from "./objects/Ball/Ball.js";
 //  Get canvas element
 const canvas = document.querySelector("#game_canvas");
 canvas.width = window.innerWidth;
@@ -24,7 +24,6 @@ requestAnimationFrame(tick);
 // Function to handle user interaction (click event)
 canvas.addEventListener('click', (event) => {
     const newBall = new Ball(event.offsetX, // Click position on canvas (X)
-    event.offsetY, // Click position on canvas (Y)
-    10, 'blue');
+    event.offsetY);
     balls.push(newBall);
 });

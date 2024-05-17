@@ -1,2 +1,2 @@
 export const fallSpeed = 9.8;
-export const radius = 5;
+export const radiusRange = [10, 20]

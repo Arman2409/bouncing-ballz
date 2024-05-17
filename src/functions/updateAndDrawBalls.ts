@@ -1,4 +1,4 @@
-import { Ball } from "../objects/Ball.js";
+import { Ball } from "../objects/Ball/Ball.js";
 
 const updateAndDrawBalls = (
   balls: Ball[],
