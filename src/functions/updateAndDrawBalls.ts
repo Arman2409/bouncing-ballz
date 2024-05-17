@@ -1,16 +1,17 @@
-import { Ball } from "../objects/Ball";
+import { Ball } from "../objects/Ball.js";
 
 const updateAndDrawBalls = (
-  balls: Ball[], 
-  deltaTime: number, 
-  context: CanvasRenderingContext2D) => {
-    for (const ball of balls) {
-      ball.x += ball.velocity.x * deltaTime;
-      ball.y += ball.velocity.y * deltaTime;
-    }
-    for (const ball of balls) {
-      ball.draw(context);
-    }
+  balls: Ball[],
+  deltaTime: number,
+  context: CanvasRenderingContext2D,
+  canvasWidth: number,
+  canvasHeight: number) => {
+  for (const ball of balls) {
+    ball.update(deltaTime, canvasWidth, canvasHeight)
+  }
+  for (const ball of balls) {
+    ball.draw(context);
+  }
 };
 
 export default updateAndDrawBalls;
