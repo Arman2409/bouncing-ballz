@@ -6,16 +6,16 @@
 
 1. Clone the project with the following command
 ```bash 
-  git clone 
+  git clone https://github.com/Arman2409/bouncing-ballz.git
 ```
 2. Open terminal and navigate to the directory where you have cloned the project
 ```bash
-  cd project
+  cd bouncing-ballz
 ```
 
-3. View the project by opening the index.html file in browser(from VSC or by just clicking the file).
+3. View the project by opening the index.html file in browser
 
-### Making changes
+### How to make changes
 
 4. Install Node.js on your machine(http://nodejs.org)
 

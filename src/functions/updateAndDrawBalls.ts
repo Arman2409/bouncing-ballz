@@ -1,16 +1,28 @@
-import { Ball } from "../objects/Ball";
+import removeElementFromArray from "../helpers/removeElementFromArray.js";
+import { Ball } from "../objects/Ball/Ball.js";
 
 const updateAndDrawBalls = (
-  balls: Ball[], 
-  deltaTime: number, 
-  context: CanvasRenderingContext2D) => {
-    for (const ball of balls) {
-      ball.x += ball.velocity.x * deltaTime;
-      ball.y += ball.velocity.y * deltaTime;
-    }
-    for (const ball of balls) {
-      ball.draw(context);
-    }
+  balls: Ball[],
+  ballsToUpdate: Ball[],
+  context: CanvasRenderingContext2D,
+  deltaTime: number,
+  canvasWidth: number,
+  canvasHeight: number) => {
+
+  // Declare function that removes a ball from ballsToUpdate
+  const removeFromArr = (ballToRemove: Ball) => {
+    removeElementFromArray(ballsToUpdate, ballToRemove);
+  }
+  
+  // Update the balls which need to be updated 
+  for (const ball of ballsToUpdate) {
+    ball.update(deltaTime, canvasWidth, canvasHeight, removeFromArr)
+  }
+
+  //  Draw all the balls
+  for (const ball of balls) {
+    ball.draw(context);
+  }
 };
 
 export default updateAndDrawBalls;
