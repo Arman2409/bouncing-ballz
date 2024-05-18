@@ -21,7 +21,7 @@ const updateAndDrawBalls = (
 
   //  Draw all the balls
   for (const ball of balls) {
-    ball.draw(context);
+    ball.draw(context, canvasHeight);
   }
 };
 

@@ -1,6 +1,7 @@
-import { fallSpeed, radiusRange } from "../../configs/ballConfigs.js";
+import { fallSpeed, radiusRange, colorsCountRange } from "../../configs/ballConfigs.js";
 import getRandomNumberInRange from "./helpers/getRandomNumberInRange.js";
 import getRandomColor from "./helpers/getRandomColor.js";
+import fillWithGradient from "./functions/fillWithGradient.js";
 import type { BallStatus } from "../../types/objects/ballTypes.js";
 
 export class Ball {
@@ -11,13 +12,14 @@ export class Ball {
   xChange: number = 0;
   colors: string[] = [];
   status: BallStatus = "falling";
+  collapsing: boolean = false;
   speed = 0;
 
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
     // Get random colors for gradient 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < getRandomNumberInRange(colorsCountRange[0], colorsCountRange[1]); i++) {
       this.colors.push(getRandomColor());
     }
     // Get random radius 
@@ -45,17 +47,20 @@ export class Ball {
   handleFalling(deltaTime: number, canvasHeight: number) {
     // Check if the ball is in the bottom of the screen 
     if (this.y >= canvasHeight - this.radius) {
-      if (this.speed < 9.8) {
-        this.status = "stopped";
-        return;
+      if (this.speed < fallSpeed) {
+        return this.stop(canvasHeight);
       };
-      this.rotateAngle = this.rotateAngle += this.xChange > 0 ? 40 : -40;
-      this.status = "rising";
-      if (!this.xChange) this.xChange = getRandomNumberInRange(-0.5, 0.5);
-      return;
+      if (this.y >= canvasHeight - this.radius / 2) {
+        return this.bounce();
+      }
+      this.collapsing = true;
     }
     this.speed += fallSpeed;
     this.y = this.y + (deltaTime * this.speed);
+
+    if (this.y >= canvasHeight) {
+      return this.y = canvasHeight;
+    }
   }
 
   handleRising(deltaTime: number) {
@@ -69,20 +74,36 @@ export class Ball {
     this.x = this.x + this.xChange;
   }
 
-  draw(context: CanvasRenderingContext2D) {
+  stop(canvasHeight: number) {
+    this.status = "stopped";
+    this.collapsing = false;
+    this.y = canvasHeight - this.radius;
+  }
+
+  bounce(){
+    this.collapsing = false;
+    this.rotateAngle = this.rotateAngle += this.xChange > 0 ? 40 : -40;
+    this.status = "rising";
+    if (!this.xChange) this.xChange = getRandomNumberInRange(-0.5, 0.5);
+  }
+
+  draw(context: CanvasRenderingContext2D, canvasHeight: number) {
     context.save();
     context.beginPath();
     context.translate(this.x, this.y)
     context.rotate(this.rotateAngle / 360 * 3.14)
-    // Draw the circle 
-    context.arc(0, 0, this.radius, 0, Math.PI * 2);
-    const gradient = context.createLinearGradient(-this.radius, 0, this.radius, 0);
-    for (let i = 0; i < this.colors.length; i++) {
-      gradient.addColorStop(i * (1 / this.colors.length), this.colors[i]);
+    // Draw the circle
+    if (this.collapsing) {
+      context.ellipse(
+        0,
+        0,
+        canvasHeight - this.y + this.radius,
+        canvasHeight - this.y, 0, 0, Math.PI * 2
+      )
     }
-    context.fillStyle = gradient;
-    context.fill();
+    else context.arc(0, 0, this.radius, 0, Math.PI * 2);
+    fillWithGradient(context, this.radius, this.colors);
     context.closePath();
-    context.restore()
+    context.restore();
   }
 }

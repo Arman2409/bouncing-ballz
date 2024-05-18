@@ -10,7 +10,7 @@ const updateAndDrawBalls = (balls, ballsToUpdate, context, deltaTime, canvasWidt
     }
     //  Draw all the balls
     for (const ball of balls) {
-        ball.draw(context);
+        ball.draw(context, canvasHeight);
     }
 };
 export default updateAndDrawBalls;
