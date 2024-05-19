@@ -13,7 +13,7 @@ const drawCircleOrEllipse = (
     context.ellipse(
       0,
       0,
-      fallHeight - y + radius,
+      radius + radius / 4,
       fallHeight - y,
       0,
       0,
@@ -22,7 +22,7 @@ const drawCircleOrEllipse = (
     return context.closePath();
   }
   context.rotate(angle / 360 * 3.14)
-  context.arc(0, 0, radius, 0, Math.PI * 2)
+  context.arc(0, 0, radius, 0, Math.PI * 2);
   context.closePath();
 }
 

@@ -6,6 +6,7 @@ const updateAndDrawBalls = (
   ballsToUpdate: Ball[],
   context: CanvasRenderingContext2D,
   deltaTime: number,
+  canvasWidth: number
   ) => {
 
   // Declare function that removes a ball from ballsToUpdate
@@ -15,7 +16,7 @@ const updateAndDrawBalls = (
 
   // Update the balls which need to be updated 
   for (const ball of ballsToUpdate) {
-    ball.update(deltaTime, removeFromArr)
+    ball.update(deltaTime, canvasWidth, removeFromArr)
   }
 
   balls.sort((a, b) => {

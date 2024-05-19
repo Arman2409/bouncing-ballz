@@ -1,12 +1,12 @@
 import removeElementFromArray from "../helpers/removeElementFromArray.js";
-const updateAndDrawBalls = (balls, ballsToUpdate, context, deltaTime) => {
+const updateAndDrawBalls = (balls, ballsToUpdate, context, deltaTime, canvasWidth) => {
     // Declare function that removes a ball from ballsToUpdate
     const removeFromArr = (ballToRemove) => {
         removeElementFromArray(ballsToUpdate, ballToRemove);
     };
     // Update the balls which need to be updated 
     for (const ball of ballsToUpdate) {
-        ball.update(deltaTime, removeFromArr);
+        ball.update(deltaTime, canvasWidth, removeFromArr);
     }
     balls.sort((a, b) => {
         if (a.fallHeight < b.fallHeight) {

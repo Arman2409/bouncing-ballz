@@ -1,8 +1,10 @@
 import updateAndDrawBalls from "./functions/updateAndDrawBalls.js";
 import { Ball } from "./objects/Ball/Ball.js"
 
-// Get the canvas element
+let clickModal = document.querySelector("#start_modal");
 const canvas = document.querySelector("#game_canvas") as HTMLCanvasElement;
+const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+
 if (!canvas) {
   throw new Error("HTML Canvas element not provided");
 }
@@ -10,7 +12,6 @@ if (!canvas) {
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
 // Initialize last time outside the loop
 let lastTime = 0;
@@ -26,7 +27,7 @@ const tick = (currentTime: number) => {
   const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
 
   // Update and draw the balls
-  updateAndDrawBalls(balls, ballsToUpdate, context, deltaTime);
+  updateAndDrawBalls(balls, ballsToUpdate, context, deltaTime, innerWidth);
 
   // Update lastTime for next frame
   lastTime = currentTime;
@@ -38,11 +39,16 @@ const tick = (currentTime: number) => {
 requestAnimationFrame(tick);
 
 // Function to handle user interaction (click event)
-canvas.addEventListener('click', ({ offsetX, offsetY }) => {
+window.addEventListener('click', ({ offsetX, offsetY }) => {
+  if (clickModal) {
+    document.body.removeChild(clickModal);
+    clickModal = null;
+  }
+
   const newBall = new Ball(
     offsetX, // Click position on canvas (X)
     offsetY, // Click position on canvas (Y)
-    canvas.height
+    innerHeight
   );
   
   balls.push(newBall);
