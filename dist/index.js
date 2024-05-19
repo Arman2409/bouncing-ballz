@@ -5,8 +5,8 @@ const canvas = document.querySelector("#game_canvas");
 if (!canvas) {
     throw new Error("HTML Canvas element not provided");
 }
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 const context = canvas.getContext("2d");
 // Initialize last time outside the loop
 let lastTime = 0;
@@ -18,7 +18,7 @@ const tick = (currentTime) => {
     // Calculate delta time
     const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
     // Update and draw the balls
-    updateAndDrawBalls(balls, ballsToUpdate, context, deltaTime, canvas.width, canvas.height);
+    updateAndDrawBalls(balls, ballsToUpdate, context, deltaTime);
     // Update lastTime for next frame
     lastTime = currentTime;
     requestAnimationFrame(tick);
@@ -28,7 +28,8 @@ requestAnimationFrame(tick);
 // Function to handle user interaction (click event)
 canvas.addEventListener('click', ({ offsetX, offsetY }) => {
     const newBall = new Ball(offsetX, // Click position on canvas (X)
-    offsetY);
+    offsetY, // Click position on canvas (Y)
+    canvas.height);
     balls.push(newBall);
     ballsToUpdate.push(newBall);
 });
