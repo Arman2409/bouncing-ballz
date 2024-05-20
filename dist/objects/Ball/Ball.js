@@ -25,21 +25,21 @@ export class Ball {
         this.radius = getRandomNumberInRange(radiusRange[0], radiusRange[1]);
         this.fallHeight = fallHeight - ballsFallDistance / 2;
     }
-    update(deltaTime, canvasWidth, removeFromArr) {
+    update(delta, canvasWidth, removeFromArr) {
         switch (this.status) {
             case "stopped":
                 // Remove the ball from the balls which need to be updated 
                 removeFromArr(this);
                 break;
             case "falling":
-                this.handleFalling(deltaTime);
+                this.handleFalling(delta);
                 break;
             case "rising":
-                this.handleRising(deltaTime, canvasWidth);
+                this.handleRising(delta, canvasWidth);
                 break;
         }
     }
-    handleFalling(deltaTime) {
+    handleFalling(delta) {
         const { y, fallHeight, radius, speed } = { ...this };
         // Check if the ball is in the bottom of the screen 
         if (y >= fallHeight - radius) {
@@ -55,18 +55,18 @@ export class Ball {
             this.collapsing = true;
         }
         this.speed += fallSpeed;
-        this.y = y + (deltaTime * this.speed);
+        this.y = y + (delta * this.speed);
         if (this.y >= fallHeight) {
             return this.y = fallHeight;
         }
     }
-    handleRising(deltaTime, canvasWidth) {
+    handleRising(delta, canvasWidth) {
         // Check if the ball has reached the peak of its trajectory
         if (this.speed <= 0) {
             return this.status = "falling";
         }
         this.speed -= fallSpeed * 2;
-        this.y = this.y - (deltaTime * this.speed);
+        this.y = this.y - (delta * this.speed);
         // Prevent balls from leaving the screen
         if (this.x >= canvasWidth - this.radius
             || this.x <= this.radius)

@@ -30,7 +30,7 @@ export class Ball {
   }
 
   update(
-    deltaTime: number,
+    delta: number,
     canvasWidth: number,
     removeFromArr: Function) {
     switch (this.status) {
@@ -39,15 +39,15 @@ export class Ball {
         removeFromArr(this);
         break;
       case "falling":
-        this.handleFalling(deltaTime);
+        this.handleFalling(delta);
         break;
       case "rising":
-        this.handleRising(deltaTime, canvasWidth);
+        this.handleRising(delta, canvasWidth);
         break;
     }
   }
 
-  private handleFalling(deltaTime: number) {
+  private handleFalling(delta: number) {
     const { y, fallHeight, radius, speed } = { ...this }
     // Check if the ball is in the bottom of the screen 
     if (y >= fallHeight - radius) {
@@ -62,20 +62,20 @@ export class Ball {
       this.collapsing = true;
     }
     this.speed += fallSpeed;
-    this.y = y + (deltaTime * this.speed);
+    this.y = y + (delta * this.speed);
 
     if (this.y >= fallHeight) {
       return this.y = fallHeight;
     }
   }
 
-  private handleRising(deltaTime: number, canvasWidth: number) {
+  private handleRising(delta: number, canvasWidth: number) {
     // Check if the ball has reached the peak of its trajectory
     if (this.speed <= 0) {
       return this.status = "falling";
     }
     this.speed -= fallSpeed * 2;
-    this.y = this.y - (deltaTime * this.speed);
+    this.y = this.y - (delta * this.speed);
     // Prevent balls from leaving the screen
     if (this.x >= canvasWidth - this.radius
       || this.x <= this.radius) return;
