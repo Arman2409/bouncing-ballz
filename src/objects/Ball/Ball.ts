@@ -1,6 +1,8 @@
-import { fallSpeed, radiusRange } from "../../configs/ballConfigs.js";
+import { fallSpeed, radiusRange, colorsCountRange, ballsFallDistance } from "../../configs/ballConfigs.js";
 import getRandomNumberInRange from "./helpers/getRandomNumberInRange.js";
 import getRandomColor from "./helpers/getRandomColor.js";
+import fillWithGradient from "./functions/fillWithGradient.js";
+import drawCircleOrEllipse from "./functions/drawCircleOrEllipse.js";
 import type { BallStatus } from "../../types/objects/ballTypes.js";
 
 export class Ball {
@@ -10,79 +12,98 @@ export class Ball {
   rotateAngle: number = 0;
   xChange: number = 0;
   colors: string[] = [];
-  status: BallStatus = "falling";
-  speed = 0;
+  fallHeight: number;
+  private collapsing: boolean = false;
+  private speed: number = 0;
+  private status: BallStatus = "falling";
 
-  constructor(x: number, y: number) {
+  constructor(x: number, y: number, fallHeight: number) {
     this.x = x;
     this.y = y;
     // Get random colors for gradient 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < getRandomNumberInRange(colorsCountRange[0], colorsCountRange[1]); i++) {
       this.colors.push(getRandomColor());
     }
     // Get random radius 
     this.radius = getRandomNumberInRange(radiusRange[0], radiusRange[1]);
+    this.fallHeight = fallHeight - ballsFallDistance / 2;
   }
 
-  update(deltaTime: number, canvasWidth: number, canvasHeight: number, removeFromArr: Function) {
-    if (canvasHeight <= 0) {
-      throw new Error("Canvas width must be positive number");
-    }
+  update(
+    delta: number,
+    canvasWidth: number,
+    removeFromArr: Function) {
     switch (this.status) {
       case "stopped":
         // Remove the ball from the balls which need to be updated 
         removeFromArr(this);
         break;
       case "falling":
-        this.handleFalling(deltaTime, canvasHeight);
+        this.handleFalling(delta);
         break;
       case "rising":
-        this.handleRising(deltaTime);
+        this.handleRising(delta, canvasWidth);
         break;
     }
   }
 
-  handleFalling(deltaTime: number, canvasHeight: number) {
+  private handleFalling(delta: number) {
+    const { y, fallHeight, radius, speed } = { ...this }
     // Check if the ball is in the bottom of the screen 
-    if (this.y >= canvasHeight - this.radius) {
-      if (this.speed < 9.8) {
-        this.status = "stopped";
-        return;
+    if (y >= fallHeight - radius) {
+      // Check if the ball has no more speed left to bounce 
+      if (speed < fallSpeed) {
+        return this.stop();
       };
-      this.rotateAngle = this.rotateAngle += this.xChange > 0 ? 40 : -40;
-      this.status = "rising";
-      if (!this.xChange) this.xChange = getRandomNumberInRange(-0.5, 0.5);
-      return;
+      // Check if the ball has finished squashing 
+      if (y >= fallHeight - radius / 2) {
+        return this.bounce();
+      }
+      this.collapsing = true;
     }
     this.speed += fallSpeed;
-    this.y = this.y + (deltaTime * this.speed);
+    this.y = y + (delta * this.speed);
+
+    if (this.y >= fallHeight) {
+      return this.y = fallHeight;
+    }
   }
 
-  handleRising(deltaTime: number) {
+  private handleRising(delta: number, canvasWidth: number) {
     // Check if the ball has reached the peak of its trajectory
     if (this.speed <= 0) {
-      this.status = "falling";
-      return;
+      return this.status = "falling";
     }
     this.speed -= fallSpeed * 2;
-    this.y = this.y - (deltaTime * this.speed);
+    this.y = this.y - (delta * this.speed);
+    // Prevent balls from leaving the screen
+    if (this.x >= canvasWidth - this.radius
+      || this.x <= this.radius) return;
     this.x = this.x + this.xChange;
   }
 
-  draw(context: CanvasRenderingContext2D) {
-    context.save();
-    context.beginPath();
-    context.translate(this.x, this.y)
-    context.rotate(this.rotateAngle / 360 * 3.14)
-    // Draw the circle 
-    context.arc(0, 0, this.radius, 0, Math.PI * 2);
-    const gradient = context.createLinearGradient(-this.radius, 0, this.radius, 0);
-    for (let i = 0; i < this.colors.length; i++) {
-      gradient.addColorStop(i * (1 / this.colors.length), this.colors[i]);
+  stop() {
+    this.status = "stopped";
+    this.y = this.fallHeight - this.radius;
+  }
+
+  bounce() {
+    this.collapsing = false;
+    this.status = "rising";
+    // Check if the ball is bouncing first time and add some deviation
+    if (!this.xChange) {
+      this.fallHeight = this.fallHeight + ballsFallDistance / 2 - getRandomNumberInRange(0, ballsFallDistance);
+      return this.xChange = getRandomNumberInRange(-0.5, 0.5);
     }
-    context.fillStyle = gradient;
-    context.fill();
+    this.rotateAngle = this.rotateAngle += this.xChange > 0 ? 15 : -15;
+  }
+
+  draw(context: CanvasRenderingContext2D) {
+    const { x, y, fallHeight, radius, rotateAngle, collapsing, colors } = { ...this }
+    context.save();
+    drawCircleOrEllipse(context, x, y, fallHeight, radius, rotateAngle, collapsing)
+    fillWithGradient(context, radius, colors);
     context.closePath();
-    context.restore()
+    context.restore();
   }
 }

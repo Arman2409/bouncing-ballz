@@ -16,7 +16,7 @@ export class Ball {
         this.y = y;
         this.radius = radius;
     }
-    update(deltaTime, canvasWidth, canvasHeight) {
+    update(delta, canvasWidth, canvasHeight) {
         if (this.status === "falling") {
             if (this.y >= canvasHeight - radius) {
                 this.status = "rising";
@@ -26,7 +26,7 @@ export class Ball {
                 return;
             }
             this.speed += fallSpeed;
-            this.y = this.y + (deltaTime * this.speed);
+            this.y = this.y + (delta * this.speed);
         }
         if (this.status === "rising") {
             if (this.speed <= 0) {
@@ -34,7 +34,7 @@ export class Ball {
                 return;
             }
             this.speed -= fallSpeed * 2;
-            this.y = this.y - (deltaTime * this.speed);
+            this.y = this.y - (delta * this.speed);
             this.x = this.x + this.xChange;
         }
     }

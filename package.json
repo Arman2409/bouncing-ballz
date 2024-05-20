@@ -7,7 +7,7 @@
     "transpile": "tsc",
     "watch": "tsc --watch"
   },
-  "keywords": [],
+  "keywords": ["HTML Canvas"],
   "author": "Arman Ghazaryan",
   "license": "ISC",
   "type": "module"

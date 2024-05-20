@@ -1,7 +1,7 @@
-const updateBalls = (balls, deltaTime) => {
+const updateBalls = (balls, delta) => {
     for (const ball of balls) {
-        ball.x += ball.velocity.x * deltaTime;
-        ball.y += ball.velocity.y * deltaTime;
+        ball.x += ball.velocity.x * delta;
+        ball.y += ball.velocity.y * delta;
     }
 };
 export default updateBalls;
