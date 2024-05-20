@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "transpile": "tsc",
-    "watch": "tsc --watch"
+    "transpile:watch": "tsc --watch"
   },
   "keywords": ["HTML Canvas"],
   "author": "Arman Ghazaryan",

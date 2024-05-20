@@ -1,4 +1,4 @@
-const drawCircleOrEllipse = (context, x, y, fallHeight, radius, angle, isEllipse) => {
+const drawCircleOrEllipse = (isEllipse, x, y, fallHeight, radius, angle, context) => {
     context.beginPath();
     context.translate(x, y);
     if (isEllipse) {

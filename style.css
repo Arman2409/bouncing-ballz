@@ -11,27 +11,23 @@ body {
     top: 0;
     left: 0;
     z-index: -1;
-    -webkit-tap-highlight-color: transparent;
-    /* for Safari */
-    -moz-user-select: none;
-    /* for Firefox */
-    -ms-user-select: none;
-    /* for IE/Edge */
-    user-select: none;
-    /* for modern browsers */
+    user-select: none; /* for modern browsers */
+    -webkit-tap-highlight-color: transparent; /* for Safari */
+    -moz-user-select: none; /* for Firefox */
+    -ms-user-select: none; /* for IE/Edge */
 }
 
 #start_modal {
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: black;
     opacity: 0.75;
     position: absolute;
     top: 0px;
     left: 0px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 #mouse_gif {
