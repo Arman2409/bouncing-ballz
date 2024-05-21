@@ -1,39 +1,35 @@
+import { radiusRange } from "./configs/ballConfigs.js";
+import { deltaLimit } from "./configs/updateConfigs.js";
 import updateAndDrawBalls from "./functions/updateAndDrawBalls.js";
+import fall from "./physics/fall.js";
 import { Ball } from "./objects/Ball/Ball.js"
+import getRandomNumberInRange from "./objects/Ball/helpers/getRandomNumberInRange.js";
 
-let clickModal = document.querySelector("#start_modal");
+let startModal = document.querySelector("#start_modal");
 const canvas = document.querySelector("#game_canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-if (!canvas) {
-  throw new Error("HTML Canvas element not provided");
+if (!canvas || !context) {
+  throw new Error("HTML Canvas element or its context not provided");
 }
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-
-// Initialize last time outside the loop
-let lastTime = 0;
-
 const balls: Ball[] = [];
 const ballsToUpdate: Ball[] = [];
 
+let lastTime = 0;
+
 const tick = (currentTime: number) => {
-  // Clear the screen
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, canvas.width, canvas.height); // Clear the screen
 
-  // Get the difference between last time and current time 
-  const timeDifference = (currentTime - lastTime) / 1000
+  const timeDifference = (currentTime - lastTime) / 1000  // Get the difference between last time and current time 
+  const delta = timeDifference > deltaLimit ? deltaLimit : timeDifference; // Check if the delta is somehow over the limit
 
-  // Check if the delta is somehow over the limit
-  const delta = timeDifference > 0.03 ? 0.03 : timeDifference; // Convert to seconds
-  
-  // Update and draw the balls
-  updateAndDrawBalls(balls, ballsToUpdate, context, delta, innerWidth);
+  updateAndDrawBalls(balls, ballsToUpdate, context, delta, innerWidth);   // Update and draw the balls
 
-  // Update lastTime for next frame
-  lastTime = currentTime;
+  lastTime = currentTime;  // Update lastTime for next frame
 
   requestAnimationFrame(tick);
 }
@@ -43,17 +39,21 @@ requestAnimationFrame(tick);
 
 // Function to handle user interaction (click event)
 window.addEventListener('click', ({ offsetX, offsetY }) => {
-  if (clickModal) {
-    document.body.removeChild(clickModal);
-    clickModal = null;
+  // Check if the start info modal is still there and delete it
+  if (startModal) {
+    document.body.removeChild(startModal);
+    startModal = null;
   }
 
   const newBall = new Ball(
-    offsetX, // Click position on canvas (X)
-    offsetY, // Click position on canvas (Y)
-    innerHeight
+    offsetX, // Click position on window (X)
+    offsetY, // Click position on window (Y)
+    getRandomNumberInRange(radiusRange[0], radiusRange[1]) // Get random radius 
   );
-  
+
   balls.push(newBall);
   ballsToUpdate.push(newBall);
+  if (offsetY < innerHeight) {
+    fall(newBall);
+  }
 });

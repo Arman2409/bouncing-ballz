@@ -1,6 +1,6 @@
 # `Bouncing Ballz`
 
-### Micro physics simulator in browser
+*** Micro physics simulator in browser ***
 
 ## How to run locally 
 
@@ -8,6 +8,7 @@
 ```bash 
   git clone https://github.com/Arman2409/bouncing-ballz.git
 ```
+
 2. Open terminal and navigate to the directory where you have cloned the project
 ```bash
   cd bouncing-ballz
@@ -15,7 +16,7 @@
 
 3. View the project by opening the index.html file in browser
 
-### How to make changes
+## How to make changes
 
 4. Install Node.js on your machine(http://nodejs.org)
 
@@ -30,3 +31,7 @@ tsc --w
 ```
 
 7. Make changes and refresh the browser
+
+## User interaction 
+
+*** Click anywhere on the screen to spawn a new bouncing circle. ***
