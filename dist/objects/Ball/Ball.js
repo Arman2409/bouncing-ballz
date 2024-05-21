@@ -1,8 +1,7 @@
-import { colorsCountRange, ballsFallDistance } from "../../configs/ballConfigs.js";
-import { fallAcceleration } from "../../configs/physicsConfigs.js";
+import { ballsFallDistance } from "../../configs/ballConfigs.js";
+import { dragCoefficient, fallAcceleration } from "../../configs/physicsConfigs.js";
 import getRandomNumberInRange from "./helpers/getRandomNumberInRange.js";
 import getRandomColor from "./helpers/getRandomColor.js";
-import fillWithGradient from "./functions/fillWithGradient.js";
 import drawCircleOrEllipse from "./functions/drawCircleOrEllipse.js";
 export class Ball {
     x;
@@ -11,17 +10,17 @@ export class Ball {
     rotateAngle = 0;
     xChange = 0;
     fallHeight = 0;
-    colors = [];
-    collapsing = false;
+    color = "#000000";
+    borderColor = "#FFFFFF";
+    isCollapsing = false;
     speed = 0;
     status = "stopped";
     constructor(x, y, radius) {
         this.x = x;
         this.y = y;
         // Get random colors for gradient 
-        for (let i = 0; i < getRandomNumberInRange(colorsCountRange[0], colorsCountRange[1]); i++) {
-            this.colors.push(getRandomColor());
-        }
+        this.color = getRandomColor();
+        this.borderColor = "black";
         this.radius = radius;
     }
     update(delta, canvasWidth, removeFromActiveBalls) {
@@ -51,13 +50,12 @@ export class Ball {
             }
             ;
             // Check if the ball has finished squashing 
-            if (y >= fallHeight - radius / 2) {
+            if (y >= fallHeight - radius / 4) {
                 return this.bounce();
             }
-            this.collapsing = true;
+            this.isCollapsing = true;
         }
-        const dragCoefficient = 0.001;
-        this.speed += fallAcceleration - fallAcceleration * dragCoefficient;
+        this.speed += fallAcceleration * (1 - dragCoefficient);
         this.y = y + (delta * this.speed);
         if (this.y >= fallHeight) {
             return this.y = fallHeight;
@@ -66,7 +64,7 @@ export class Ball {
     handleRising(delta, canvasWidth) {
         // Check if the ball has reached the peak of its trajectory
         if (this.speed <= 0) {
-            return this.status = "falling";
+            return this.fall();
         }
         this.speed -= fallAcceleration * 2;
         this.y = this.y - (delta * this.speed);
@@ -76,25 +74,26 @@ export class Ball {
             return;
         this.x = this.x + this.xChange;
     }
+    fall() {
+        this.status = "falling";
+    }
     stop() {
         this.status = "stopped";
-        this.y = this.fallHeight - this.radius;
     }
     bounce() {
-        this.collapsing = false;
+        this.isCollapsing = false;
         this.status = "rising";
         // Check if the ball is bouncing first time and add some deviation
         if (!this.xChange) {
             this.fallHeight = this.fallHeight + ballsFallDistance / 2 - getRandomNumberInRange(0, ballsFallDistance);
             return this.xChange = getRandomNumberInRange(-0.5, 0.5);
         }
-        this.rotateAngle = this.rotateAngle += this.xChange > 0 ? 15 : -15;
+        this.rotateAngle = this.rotateAngle += this.xChange > 0 ? 50 : -50;
     }
     draw(context) {
-        const { x, y, fallHeight, radius, rotateAngle, collapsing, colors } = { ...this };
+        const { x, y, fallHeight, radius, rotateAngle, isCollapsing, color, borderColor } = { ...this };
         context.save();
-        drawCircleOrEllipse(collapsing, x, y, fallHeight, radius, rotateAngle, context);
-        fillWithGradient(context, radius, colors);
+        drawCircleOrEllipse(isCollapsing, x, y, fallHeight, radius, rotateAngle, color, borderColor, context);
         context.closePath();
         context.restore();
     }
