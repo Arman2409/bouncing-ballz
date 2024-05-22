@@ -1,7 +1,6 @@
-import { ballsFallDistance } from "../../configs/ballConfigs.js";
+import { ballsFallDistance, ballBorderColor, ballDecorationColor } from "../../configs/ballConfigs.js";
 import { dragCoefficient, fallAcceleration } from "../../configs/physicsConfigs.js";
 import getRandomNumberInRange from "./helpers/getRandomNumberInRange.js";
-import getRandomColor from "./helpers/getRandomColor.js";
 import drawCircleOrEllipse from "./functions/drawCircleOrEllipse.js";
 export class Ball {
     x;
@@ -11,16 +10,18 @@ export class Ball {
     xChange = 0;
     fallHeight = 0;
     color = "#000000";
-    borderColor = "#FFFFFF";
+    ballBorderColor = "#FFFFFF";
+    ballDecorationColor = "#FFFFFF";
     isCollapsing = false;
     speed = 0;
     status = "stopped";
-    constructor(x, y, radius) {
+    constructor(x, y, radius, color) {
         this.x = x;
         this.y = y;
         // Get random colors for gradient 
-        this.color = getRandomColor();
-        this.borderColor = "black";
+        this.color = color;
+        this.ballBorderColor = ballBorderColor;
+        this.ballDecorationColor = ballDecorationColor;
         this.radius = radius;
     }
     update(delta, canvasWidth, removeFromActiveBalls) {
@@ -50,7 +51,7 @@ export class Ball {
             }
             ;
             // Check if the ball has finished squashing 
-            if (y >= fallHeight - radius / 4) {
+            if (y >= fallHeight) {
                 return this.bounce();
             }
             this.isCollapsing = true;
@@ -91,10 +92,9 @@ export class Ball {
         this.rotateAngle = this.rotateAngle += this.xChange > 0 ? 50 : -50;
     }
     draw(context) {
-        const { x, y, fallHeight, radius, rotateAngle, isCollapsing, color, borderColor } = { ...this };
+        const { x, y, fallHeight, radius, rotateAngle, isCollapsing, color, ballBorderColor, ballDecorationColor } = { ...this };
         context.save();
-        drawCircleOrEllipse(isCollapsing, x, y, fallHeight, radius, rotateAngle, color, borderColor, context);
-        context.closePath();
+        drawCircleOrEllipse(context, isCollapsing, x, y, fallHeight, radius, rotateAngle, color, ballBorderColor, ballDecorationColor);
         context.restore();
     }
 }

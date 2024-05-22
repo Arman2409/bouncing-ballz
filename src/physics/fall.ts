@@ -1,4 +1,4 @@
-import { ElementStatus } from "../types/objects/global.js";
+import { ElementStatus } from "../types/global.js";
 
 const fall = (item: Object) => {
     (item as { setFallHeight: Function }).setFallHeight(innerHeight);

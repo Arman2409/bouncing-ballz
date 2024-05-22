@@ -1,7 +1,12 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    cursor: none;
 }
 
 #background {
@@ -30,7 +35,39 @@ body {
     left: 0px;
 }
 
-#mouse_gif {
+#start_mouse_gif {
     width: 200px;
     height: 200px;
+}
+
+#mouse {
+    width: 20px;
+    height: 20px;
+    background-color: purple;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border: 2px solid green;
+    animation: appear-disappear 1s ease-in-out forwards;
+}
+
+@keyframes appear-disappear {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
 }
