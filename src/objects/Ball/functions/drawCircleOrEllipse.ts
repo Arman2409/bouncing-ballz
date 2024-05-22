@@ -1,4 +1,5 @@
 const drawCircleOrEllipse = (
+  ctx: CanvasRenderingContext2D,
   isEllipse: boolean,
   x: number,
   y: number,
@@ -6,18 +7,20 @@ const drawCircleOrEllipse = (
   radius: number,
   angle: number,
   color: string,
-  borderColor: string,
-  ctx: CanvasRenderingContext2D,
+  ballBorderColor: string,
+  decorationColor: string
 ) => {
   ctx.beginPath();
   ctx.fillStyle = color;
-  ctx.strokeStyle = borderColor;
+  ctx.strokeStyle = ballBorderColor;
   if (isEllipse) {
+    const squashRadiusY =  fallHeight - y > radius * 0.75 ? fallHeight - y : radius * 0.75;
+    const squashRadiusX = radius * 2 - squashRadiusY;
     ctx.ellipse(
       x,
       y,
-      radius + radius / 4,
-      fallHeight - y,
+      squashRadiusX,
+      squashRadiusY,
       0,
       0,
       Math.PI * 2
@@ -32,10 +35,10 @@ const drawCircleOrEllipse = (
   ctx.fill();
   ctx.stroke();
   ctx.beginPath();
-  ctx.fillStyle = "white";
+  ctx.fillStyle = decorationColor;
   ctx.ellipse(radius - 6, 0, 1, 4, 0,  0, Math.PI * 2);
   ctx.shadowBlur = 10; 
-  ctx.shadowColor = "white"; 
+  ctx.shadowColor = decorationColor; 
   ctx.fill();
   ctx.closePath();
 }

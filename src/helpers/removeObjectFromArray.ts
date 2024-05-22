@@ -1,13 +1,13 @@
 const removeObjectFromArray = (
   arr: Object[],
-  element: Object): null | void => {
+  element: Object): void => {
   // Find the index of the element
   const index = arr.findIndex(item => item === element);
 
   // Check if element found
   if (index === -1) {
-    console.error("Object not found to remove");
-    return null;
+    console.error("Object not found for removal");
+    return;
   }
 
   // Remove the element
