@@ -46,6 +46,9 @@ body {
     background-color: purple;
     border-radius: 50%;
     position: absolute;
+    border-style: double;
+    border-width: 5px;
+    border-color: green;
 }
 
 .circle {

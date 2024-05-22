@@ -1,5 +1,5 @@
 const fall = (item) => {
-    item.setFallHeight(innerHeight);
+    // (item as { setFallHeight: Function }).setFallHeight(innerHeight);
     item.status = "falling";
 };
 export default fall;

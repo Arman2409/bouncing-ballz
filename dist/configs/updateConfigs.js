@@ -1,1 +1,1 @@
-export const deltaLimit = 0.03;
+export const maxDelta = 0.03;

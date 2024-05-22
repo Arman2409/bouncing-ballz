@@ -1,12 +1,12 @@
-import { ballRadiusRange } from "./configs/ballConfigs.js";
-import { deltaLimit } from "./configs/updateConfigs.js";
+import { ballRadiusRange, ballsFallDistance } from "./configs/ballConfigs.js";
+import { maxDelta } from "./configs/updateConfigs.js";
 import updateAndDrawBalls from "./functions/updateAndDrawBalls.js";
-import fall from "./physics/fall.js";
 import { Ball } from "./objects/Ball/Ball.js";
 import getRandomNumberInRange from "./objects/Ball/helpers/getRandomNumberInRange.js";
-import getRandomColor from "./objects/Ball/helpers/getRandomColor.js";
+import getRandomColor from "./helpers/getRandomColor.js";
 import { mouseSize } from "./configs/mouseConfigs.js";
 import createPulsingCircle from "./functions/createPulsingCircle.js";
+import shouldFall from "./physics/shouldFall.js";
 let startModal = document.querySelector("#start_modal");
 const mouseCont = document.querySelector("#mouse");
 const canvas = document.querySelector("#game_canvas");
@@ -23,7 +23,7 @@ let lastTime = 0;
 const tick = (currentTime) => {
     context.clearRect(0, 0, canvas.width, canvas.height); // Clear the screen
     const timeDifference = (currentTime - lastTime) / 1000; // Get the difference between last time and current time 
-    const delta = timeDifference > deltaLimit ? deltaLimit : timeDifference; // Check if the delta is somehow over the limit
+    const delta = timeDifference > maxDelta ? maxDelta : timeDifference; // Check if the delta is somehow over the limit
     updateAndDrawBalls(balls, ballsToUpdate, context, delta, innerWidth); // Update and draw the balls
     lastTime = currentTime; // Update lastTime for next frame
     requestAnimationFrame(tick);
@@ -42,14 +42,16 @@ window.addEventListener('click', ({ clientX, clientY }) => {
     const newBall = new Ball(clientX, // Click position on window (X)
     clientY, // Click position on window (Y)
     getRandomNumberInRange(ballRadiusRange[0], ballRadiusRange[1]), // Get random radius 
-    newBallColor);
+    newBallColor, innerHeight);
     balls.push(newBall);
     ballsToUpdate.push(newBall);
-    if (clientY < innerHeight) {
-        fall(newBall);
-    }
+    shouldFall(newBall, clientY, ballsFallDistance / 2);
 });
 window.addEventListener("mousemove", handleMouseMove);
+window.addEventListener("resize", () => {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+});
 function handleMouseMove({ clientX, clientY }) {
     if (!mouseCont) {
         console.error("Mouse container not found");
