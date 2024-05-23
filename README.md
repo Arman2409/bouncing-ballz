@@ -2,11 +2,7 @@
 
 Micro physics simulator in browser
 
-## Live Preview
-
-<a href="https://bouncing-balls-app.netlify.app/" target="_blank">
-Live Preview
-</a>
+[Live Preview](https://bouncing-balls-app.netlify.app/)
 
 ## User interaction 
 
