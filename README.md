@@ -33,7 +33,7 @@ npm install
 
 6. Start Typescript server by running
 ```bash
-npm run build:watch
+npm run build
 ```
 
 7. Make changes and refresh the browser
