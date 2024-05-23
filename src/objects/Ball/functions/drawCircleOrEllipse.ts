@@ -18,7 +18,7 @@ const drawCircleOrEllipse = (
     const squashRadiusX = radius * 2 - squashRadiusY;
     ctx.ellipse(
       x,
-      y,
+      y + radius - squashRadiusY,
       squashRadiusX,
       squashRadiusY,
       0,

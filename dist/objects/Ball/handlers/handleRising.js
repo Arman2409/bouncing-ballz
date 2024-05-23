@@ -5,6 +5,7 @@ const handleRising = (ballObj, delta, xChange, canvasWidth) => {
     if (speed <= 0) {
         return ballObj.fall();
     }
+    // Decrement the speed of the ball
     ballObj.speed -= fallAcceleration * 2;
     ballObj.y -= (delta * ballObj.speed);
     // Prevent balls from leaving the screen

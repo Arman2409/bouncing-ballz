@@ -1,1 +1,0 @@
-export type ElementStatus = "falling" | "rising" | "stopped";

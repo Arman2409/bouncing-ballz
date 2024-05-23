@@ -1,6 +1,16 @@
 # `Bouncing Ballz`
 
-`Micro physics simulator in browser`
+Micro physics simulator in browser
+
+## Live Preview
+
+<a href="https://bouncing-balls-app.netlify.app/" target="_blank">
+Live Preview
+</a>
+
+## User interaction 
+
+Click anywhere on the screen to spawn a new bouncing circle.
 
 ## How to run locally 
 
@@ -31,7 +41,3 @@ npm run build:watch
 ```
 
 7. Make changes and refresh the browser
-
-## User interaction 
-
-`Click anywhere on the screen to spawn a new bouncing circle.`

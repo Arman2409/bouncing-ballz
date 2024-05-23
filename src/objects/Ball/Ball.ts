@@ -2,7 +2,7 @@ import getRandomNumberInRange from "./helpers/getRandomNumberInRange.js";
 import drawCircleOrEllipse from "./functions/drawCircleOrEllipse.js";
 import handleFalling from "./handlers/handleFalling.js";
 import handleRising from "./handlers/handleRising.js";
-import type { ElementStatus } from "../../types/global.js";
+import type { BallStatus } from "../../types/objects/ballTypes.js";
 
 export class Ball {
   x: number;
@@ -10,7 +10,7 @@ export class Ball {
   fallHeight: number = 0;
   speed: number = 0;
   isCollapsing: boolean = false;
-  status: ElementStatus = "stopped";
+  status: BallStatus = "stopped";
 
   private yHasChanged: boolean = false;
   private rotateAngle: number = 0;
@@ -37,7 +37,7 @@ export class Ball {
     this.radius = radius;
     this.borderColor = borderColor;
     this.decorationColor = decorationColor;
-    this.fallRadius =  fallRadius;
+    this.fallRadius = fallRadius;
   }
 
   update(

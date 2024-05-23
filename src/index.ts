@@ -4,9 +4,10 @@ import { circleAnimationDuration, clickCircleSize, mouseRadius } from "./configs
 import updateAndDrawBalls from "./functions/updateAndDrawBalls.js";
 import createPulsingCircle from "./functions/createPulsingCircle.js";
 import getRandomColor from "./helpers/getRandomColor.js";
-import { Ball } from "./objects/Ball/Ball.js"
 import shouldFall from "./physics/shouldFall.js";
+import { Ball } from "./objects/Ball/Ball.js"
 
+// Check if web browser environment is available
 if (!document || typeof innerHeight === "undefined"
   || typeof innerWidth === "undefined") {
   throw new Error("Web browser environment is required that provides innerHeight and innerWidth properties.");
@@ -37,8 +38,7 @@ const tick = (currentTime: number) => {
   requestAnimationFrame(tick);
 }
 
-// Start the game loop
-requestAnimationFrame(tick);
+requestAnimationFrame(tick); // Start the game loop
 
 let startModal = document.querySelector("#start_modal");
 const mouseCont = document.querySelector("#mouse") as HTMLDivElement;
@@ -51,8 +51,7 @@ window.addEventListener('click', ({ clientX, clientY }) => {
     startModal = null;
   }
 
-  // Get random ball color 
-  const newBallColor = getRandomColor();
+  const newBallColor = getRandomColor(); // Get random ball color 
   createPulsingCircle(clientX, clientY, clickCircleSize, circleAnimationDuration, newBallColor);
 
   const newBall = new Ball(
