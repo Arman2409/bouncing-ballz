@@ -1,0 +1,18 @@
+import type { Ball } from "../../objects/Ball/Ball.js";
+
+const sortBalls = (balls: Ball[]) => {
+    balls.sort((ball1, ball2) => {
+        if (ball1.fallHeight > ball2.fallHeight) {
+            return 1;
+        }
+        if (ball1.fallHeight === ball2.fallHeight) {
+            if (ball1.y > ball2.y) {
+                return 1
+            }
+            return - 1;
+        }
+        return -1;
+    });
+}
+
+export default sortBalls;

@@ -1,6 +1,12 @@
 # `Bouncing Ballz`
 
-*** Micro physics simulator in browser ***
+Micro physics simulator in browser
+
+[Live Preview](https://bouncing-balls-app.netlify.app/)
+
+## User interaction 
+
+Click anywhere on the screen to spawn a new bouncing circle.
 
 ## How to run locally 
 
@@ -27,11 +33,7 @@ npm install
 
 6. Start Typescript server by running
 ```bash
-tsc --w
+npm run build
 ```
 
 7. Make changes and refresh the browser
-
-## User interaction 
-
-*** Click anywhere on the screen to spawn a new bouncing circle. ***

@@ -18,7 +18,7 @@ const drawCircleOrEllipse = (
     const squashRadiusX = radius * 2 - squashRadiusY;
     ctx.ellipse(
       x,
-      y,
+      y + radius - squashRadiusY,
       squashRadiusX,
       squashRadiusY,
       0,
@@ -36,7 +36,9 @@ const drawCircleOrEllipse = (
   ctx.stroke();
   ctx.beginPath();
   ctx.fillStyle = decorationColor;
+  // Draw the decoration ellipse 
   ctx.ellipse(radius - 6, 0, 1, 4, 0,  0, Math.PI * 2);
+  // Add shadow to the decoration 
   ctx.shadowBlur = 10; 
   ctx.shadowColor = decorationColor; 
   ctx.fill();
