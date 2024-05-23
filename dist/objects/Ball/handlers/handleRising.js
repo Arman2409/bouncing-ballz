@@ -1,6 +1,6 @@
 import { fallAcceleration } from "../../../configs/physicsConfigs.js";
-const handleRising = (ballObj, delta, canvasWidth) => {
-    const { x, xChange, radius, speed } = { ...ballObj };
+const handleRising = (ballObj, delta, xChange, canvasWidth) => {
+    const { x, radius, speed } = { ...ballObj };
     // Check if the ball has reached the peak of its trajectory
     if (speed <= 0) {
         return ballObj.fall();

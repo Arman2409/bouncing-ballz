@@ -1,5 +1,7 @@
 import removeObjectFromArray from "../helpers/removeObjectFromArray.js";
-const updateAndDrawBalls = (balls, ballsToUpdate, context, delta, canvasWidth) => {
+import sortBalls from "./helpers/sortBalls.js";
+const updateAndDrawBalls = (context, balls, ballsToUpdate, delta, canvasWidth) => {
+    context.clearRect(0, 0, innerWidth, innerHeight); // Clear the screen
     // Declare function that removes a ball from ballsToUpdate
     const removeFromArr = (ballToRemove) => {
         removeObjectFromArray(ballsToUpdate, ballToRemove);
@@ -9,12 +11,7 @@ const updateAndDrawBalls = (balls, ballsToUpdate, context, delta, canvasWidth) =
         ball.update(delta, canvasWidth, removeFromArr);
     }
     // Sort balls by their drawing priority
-    balls.sort((a, b) => {
-        if (a.fallHeight < b.fallHeight) {
-            return -1;
-        }
-        return 1;
-    });
+    sortBalls(balls);
     //  Draw the balls
     for (const ball of balls) {
         ball.draw(context);

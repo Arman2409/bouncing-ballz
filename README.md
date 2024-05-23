@@ -1,6 +1,6 @@
 # `Bouncing Ballz`
 
-*** Micro physics simulator in browser ***
+`Micro physics simulator in browser`
 
 ## How to run locally 
 
@@ -27,11 +27,11 @@ npm install
 
 6. Start Typescript server by running
 ```bash
-tsc --w
+npm run build:watch
 ```
 
 7. Make changes and refresh the browser
 
 ## User interaction 
 
-*** Click anywhere on the screen to spawn a new bouncing circle. ***
+`Click anywhere on the screen to spawn a new bouncing circle.`

@@ -1,4 +1,3 @@
-import { ballsFallDistance, ballBorderColor, ballDecorationColor } from "../../configs/ballConfigs.js";
 import getRandomNumberInRange from "./helpers/getRandomNumberInRange.js";
 import drawCircleOrEllipse from "./functions/drawCircleOrEllipse.js";
 import handleFalling from "./handlers/handleFalling.js";
@@ -8,25 +7,37 @@ import type { ElementStatus } from "../../types/global.js";
 export class Ball {
   x: number;
   y: number;
-  radius: number;
-  rotateAngle: number = 0;
-  xChange: number = 0;
-  yChanged: boolean = false;
   fallHeight: number = 0;
-  color: string = "#000000";
-  ballBorderColor: string = "#FFFFFF";
-  ballDecorationColor: string = "#FFFFFF";
-  isCollapsing: boolean = false;
   speed: number = 0;
+  isCollapsing: boolean = false;
   status: ElementStatus = "stopped";
 
-  constructor(x: number, y: number, radius: number, color: string, innerHeight: number) {
+  private yHasChanged: boolean = false;
+  private rotateAngle: number = 0;
+  private xChange: number = 0;
+
+  readonly radius: number;
+  readonly fallRadius:number;
+  readonly color: string;
+  readonly borderColor: string;
+  readonly decorationColor:string;
+
+  constructor(
+    x: number, 
+    y: number, 
+    radius: number,
+    fallRadius: number,
+    color: string, 
+    borderColor:string,
+    decorationColor:string,
+  ) {
     this.x = x;
     this.y = y;
     this.color = color;
-    this.ballBorderColor = ballBorderColor;
-    this.ballDecorationColor = ballDecorationColor
-    this.radius = 20;
+    this.radius = radius;
+    this.borderColor = borderColor;
+    this.decorationColor = decorationColor;
+    this.fallRadius =  fallRadius;
   }
 
   update(
@@ -42,19 +53,19 @@ export class Ball {
         handleFalling(this, delta);
         break;
       case "rising":
-        handleRising(this, delta, canvasWidth);
+        handleRising(this, delta, this.xChange, canvasWidth);
         break;
     }
   }
 
   fall() {
     this.status = "falling";
-    if( this.fallHeight - this.y < this.radius / 4) {
+    if (this.fallHeight - this.y < this.radius / 4) {
       this.stop();
     }
-    if (!this.yChanged) {
-      this.fallHeight = this.fallHeight + ballsFallDistance / 2 - getRandomNumberInRange(0, ballsFallDistance);
-      this.yChanged = true;
+    if (!this.yHasChanged) {
+      this.fallHeight = this.fallHeight + this.fallRadius / 2 - getRandomNumberInRange(this.radius, this.fallRadius - this.radius);
+      this.yHasChanged = true;
     }
   }
 
@@ -83,8 +94,8 @@ export class Ball {
       rotateAngle,
       isCollapsing,
       color,
-      ballBorderColor,
-      ballDecorationColor } = { ...this }
+      borderColor,
+      decorationColor } = { ...this }
     context.save();
     drawCircleOrEllipse(
       context,
@@ -95,8 +106,8 @@ export class Ball {
       radius,
       rotateAngle,
       color,
-      ballBorderColor,
-      ballDecorationColor
+      borderColor,
+      decorationColor
     )
     context.restore();
   }

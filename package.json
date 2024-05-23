@@ -4,10 +4,10 @@
   "description": "Micro physics simulator in browser",
   "main": "./dist/index.js",
   "scripts": {
-    "transpile": "tsc",
-    "transpile:watch": "tsc --watch"
+    "build": "tsc",
+    "build:watch": "tsc --watch"
   },
-  "keywords": ["HTML Canvas"],
+  "keywords": [],
   "author": "Arman Ghazaryan",
   "license": "ISC",
   "type": "module"
